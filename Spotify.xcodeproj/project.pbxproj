@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041F504E2AC0290C00AC312F /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041F504D2AC0290C00AC312F /* AuthResponse.swift */; };
 		043A02492ABFB15400893F53 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043A02482ABFB15300893F53 /* TabBarViewController.swift */; };
 		043A024B2ABFB18900893F53 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043A024A2ABFB18900893F53 /* SearchViewController.swift */; };
 		043A024D2ABFB19F00893F53 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043A024C2ABFB19F00893F53 /* LibraryViewController.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		041F504D2AC0290C00AC312F /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		043A02482ABFB15300893F53 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		043A024A2ABFB18900893F53 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		043A024C2ABFB19F00893F53 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				043A02662ABFB2F600893F53 /* AudioTrack.swift */,
 				043A02682ABFB30600893F53 /* Artist.swift */,
 				043A026A2ABFB31800893F53 /* UserProfile.swift */,
+				041F504D2AC0290C00AC312F /* AuthResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				0477D19D2AAED230004A1970 /* HomeViewController.swift in Sources */,
 				043A02632ABFB2BC00893F53 /* HapticsManager.swift in Sources */,
 				043A02512ABFB20A00893F53 /* AuthViewController.swift in Sources */,
+				041F504E2AC0290C00AC312F /* AuthResponse.swift in Sources */,
 				043A02672ABFB2F600893F53 /* AudioTrack.swift in Sources */,
 				043A02552ABFB22D00893F53 /* SettingViewController.swift in Sources */,
 				043A02652ABFB2DF00893F53 /* PlayList.swift in Sources */,
