@@ -152,6 +152,7 @@ class HomeViewController: UIViewController {
                                             numberOfTracks: $0.total_tracks,
                                             artistName: $0.artists.first?.name ?? "-")
         })))
+        
         sections.append(.featuredPlaylists(viewModels: []))
         
         sections.append(.recommendedTracks(viewModels: []))
@@ -198,8 +199,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 return UICollectionViewCell()
             }
             let viewModel = viewModels[indexPath.row]
-            
-            cell.backgroundColor = .red
+                
+            cell.configure(with: viewModel)
             return cell
             
         case .featuredPlaylists(let viewModels):
