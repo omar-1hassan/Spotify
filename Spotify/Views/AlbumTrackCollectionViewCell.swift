@@ -1,23 +1,18 @@
 //
-//  RecommendedTreckCollectionViewCell.swift
+//  AlbumTrackCollectionViewCell.swift
 //  Spotify
 //
-//  Created by mac on 03/10/2023.
+//  Created by mac on 04/10/2023.
 //
 
 import UIKit
 
-class RecommendedTrackCollectionViewCell: UICollectionViewCell {
-    static let identifier = "RecommendedTrackCollectionViewCell"
+
+class AlbumTrackCollectionViewCell: UICollectionViewCell {
+    static let identifier = "AlbumTrackCollectionViewCell"
     
     
-    private let albumCoverImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "photo")
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-        
-    }()
+
     
     private let trackNameLabel: UILabel = {
         let label = UILabel()
@@ -37,7 +32,6 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .secondarySystemBackground
         contentView.backgroundColor = .secondarySystemBackground
-        contentView.addSubview(albumCoverImageView)
         contentView.addSubview(trackNameLabel)
         contentView.addSubview(artistNameLabel)
         contentView.clipsToBounds = true
@@ -51,11 +45,10 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        albumCoverImageView.frame = CGRect(x: 5, y: 2, width: contentView.height-4, height: contentView.height-4)
         
-        trackNameLabel.frame = CGRect(x: albumCoverImageView.right+10, y: 0, width: contentView.width-albumCoverImageView.right-15, height: contentView.height/2)
+        trackNameLabel.frame = CGRect(x: 10, y: 0, width: contentView.width-15, height: contentView.height/2)
         
-        artistNameLabel.frame = CGRect(x: albumCoverImageView.right+10, y: contentView.height/2, width: contentView.width-albumCoverImageView.right-15, height: contentView.height/2)
+        artistNameLabel.frame = CGRect(x: 10, y: contentView.height/2, width: contentView.width-15, height: contentView.height/2)
         
     }
     
@@ -65,12 +58,10 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         trackNameLabel.text = nil
         artistNameLabel.text = nil
-        albumCoverImageView.image = nil
     }
     
-    func configure(with viewModel: RecommendedTrackCellViewModel) {
+    func configure(with viewModel: AlbumCollectionViewCellViewModel) {
         trackNameLabel.text = viewModel.name
-        albumCoverImageView.sd_setImage(with: viewModel.artWorkURL)
         artistNameLabel.text = viewModel.artistNAme
         
     }

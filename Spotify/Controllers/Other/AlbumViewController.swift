@@ -1,15 +1,13 @@
 //
-//  PlayListViewController.swift
+//  AlbumViewController.swift
 //  Spotify
 //
-//  Created by mac on 24/09/2023.
+//  Created by mac on 03/10/2023.
 //
 
 import UIKit
 
-class PlayListViewController: UIViewController {
-    
-    private let playlist: Playlist
+class AlbumViewController: UIViewController {
     
     private let collectionView = UICollectionView(frame: .zero,
                                                   collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _,_ -> NSCollectionLayoutSection? in
@@ -18,14 +16,10 @@ class PlayListViewController: UIViewController {
         
         item.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 2, bottom: 1, trailing: 2)
         
-        
-        //Vertical group in Horizontal group
-        
         let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(60)),
                                                      subitem: item,
                                                      count: 1)
         
-        //Section
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1)),
@@ -36,24 +30,28 @@ class PlayListViewController: UIViewController {
     })
     )
     
-    init(playlist: Playlist) {
-        self.playlist = playlist
+
+    private var viewModels = [AlbumCollectionViewCellViewModel]()
+    
+    private let album: Album
+    
+    init(album: Album) {
+        self.album = album
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
-    private var viewModels = [RecommendedTrackCellViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = playlist.name
+        title = album.name
         view.backgroundColor = .systemBackground
         view.addSubview(collectionView)
         
-        collectionView.register(RecommendedTrackCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier)
+        collectionView.register(AlbumTrackCollectionViewCell.self, forCellWithReuseIdentifier: AlbumTrackCollectionViewCell.identifier)
         
         collectionView.register(PlaylistHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PlaylistHeaderCollectionReusableView.identifier)
         
@@ -61,54 +59,34 @@ class PlayListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        
-        APICaller.shared.getPlaylistDetails(for: playlist) { [weak self] result in
+        APICaller.shared.getAlbumsDetails(for: album) { [weak self] result in
             DispatchQueue.main.async {
-                switch result{
+                switch result {
                     
                 case .success(let model):
-                    //RecommendedTrackCellViewModel
                     self?.viewModels = model.tracks.items.compactMap({
-                        RecommendedTrackCellViewModel(name: $0.track.name,
-                                                      artistNAme: $0.track.artists.first?.name ?? "-",
-                                                      artWorkURL: URL(string: $0.track.album?.images.first?.url ?? ""))
+                        AlbumCollectionViewCellViewModel(name: $0.name,
+                                                      artistNAme: $0.artists.first?.name ?? "-")
                         
                     })
                     self?.collectionView.reloadData()
-                    
+ 
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         }
-    
-        //Share Button
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action,
-                                                            target: self,
-                                                            action: #selector(didTapShare))
+
     }
-    
-    
-    @objc private func didTapShare() {
-        guard let url = URL(string: playlist.external_urls["spotify"] ?? "") else {
-            return
-        }
+
         
-        let vc = UIActivityViewController(
-            activityItems: [url],
-            applicationActivities: [])
-        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true)
-    }
-    
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
     }
 }
 
-extension PlayListViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -119,8 +97,8 @@ extension PlayListViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendedTrackCollectionViewCell.identifier, for: indexPath) as?
-                RecommendedTrackCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumTrackCollectionViewCell.identifier, for: indexPath) as?
+                AlbumTrackCollectionViewCell else {
             return UICollectionViewCell()
         }
         cell.configure(with: viewModels[indexPath.row])
@@ -134,11 +112,12 @@ extension PlayListViewController: UICollectionViewDelegate, UICollectionViewData
             for: indexPath) as? PlaylistHeaderCollectionReusableView, kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
         }
+
         let headerViewModel = PlaylistHeaderViewModel(
-            name: playlist.name,
-            ownerName: playlist.owner.display_name,
-            description: playlist.description,
-            artWorkURL: URL(string: playlist.images.first?.url ?? ""))
+            name: album.name,
+            ownerName: album.artists.first?.name,
+            description: "Released Date: \(String.formatedDate(string: album.release_date)) ",
+            artWorkURL: URL(string: album.images.first?.url ?? ""))
         header.configure(with: headerViewModel)
         //4
         header.delegate = self
@@ -153,7 +132,7 @@ extension PlayListViewController: UICollectionViewDelegate, UICollectionViewData
 }
 
 //5
-extension PlayListViewController: PlaylistHeaderCollectionReusableViewDelegate{
+extension AlbumViewController: PlaylistHeaderCollectionReusableViewDelegate{
     func PlaylistHeaderCollectionReusableViewDidTapPlayAll(_ header: PlaylistHeaderCollectionReusableView) {
         //Start Playlist play in queue
         print("playing all")
