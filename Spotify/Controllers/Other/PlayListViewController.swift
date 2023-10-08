@@ -45,6 +45,7 @@ class PlayListViewController: UIViewController {
         fatalError()
     }
     private var viewModels = [RecommendedTrackCellViewModel]()
+    private var tracks = [AudioTrack]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,6 +69,7 @@ class PlayListViewController: UIViewController {
                     
                 case .success(let model):
                     //RecommendedTrackCellViewModel
+                    self?.tracks = model.tracks.items.compactMap({ $0.track })
                     self?.viewModels = model.tracks.items.compactMap({
                         RecommendedTrackCellViewModel(name: $0.track.name,
                                                       artistNAme: $0.track.artists.first?.name ?? "-",
@@ -148,6 +150,9 @@ extension PlayListViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         //Play song
+        let index = indexPath.row
+        let track = tracks[index]
+        PlaybackPresenter.shared.startPlayback(from: self, track: track)
     }
     
 }
@@ -156,6 +161,6 @@ extension PlayListViewController: UICollectionViewDelegate, UICollectionViewData
 extension PlayListViewController: PlaylistHeaderCollectionReusableViewDelegate{
     func PlaylistHeaderCollectionReusableViewDidTapPlayAll(_ header: PlaylistHeaderCollectionReusableView) {
         //Start Playlist play in queue
-        print("playing all")
+        PlaybackPresenter.shared.startPlayback(from: self, tracks: tracks)
     }
 }
