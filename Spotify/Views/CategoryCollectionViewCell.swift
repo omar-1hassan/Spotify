@@ -12,7 +12,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     static let identifier = "CategoryCollectionViewCell"
     
     private let imageView: UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .white
         imageView.image = UIImage(systemName: "music.quarternote.3", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50, weight: .regular))
@@ -37,10 +37,6 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         .systemYellow,
         .systemGray,
         .darkGray,
-        .systemCyan,
-        .systemMint,
-        .systemBrown,
-        .systemTeal
     ]
     
     override init(frame: CGRect) {
@@ -49,7 +45,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         contentView.layer.masksToBounds = true
         contentView.addSubview(label)
         contentView.addSubview(imageView)
-
+        
     }
     
     required init?(coder: NSCoder){

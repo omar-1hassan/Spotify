@@ -30,7 +30,7 @@ class SearchResultViewController: UIViewController {
         tableView.isHidden = true
         return tableView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
@@ -73,7 +73,7 @@ class SearchResultViewController: UIViewController {
             SearchSection(title: "Artists", results: artist),
             SearchSection(title: "Playlists", results: playlists),
             SearchSection(title: "Albums", results: albums)
-
+            
         ]
         tableView.reloadData()
         tableView.isHidden = results.isEmpty
@@ -101,7 +101,7 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
             let viewModel = SearchResultDefaultTableViewCellViewModel(title: artist.name, imageURL: URL(string: artist.images?.first?.url ?? ""))
             cell.configure(with: viewModel)
             return cell
-
+            
         case .album(let album):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultsSubtitleTableViewCell.indentifier, for: indexPath) as? SearchResultsSubtitleTableViewCell else {
                 return UITableViewCell()
@@ -135,13 +135,13 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].title
-
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let result = sections[indexPath.section].results[indexPath.row]
-
+        
         delegate?.didTapResult(result)
     }
 }

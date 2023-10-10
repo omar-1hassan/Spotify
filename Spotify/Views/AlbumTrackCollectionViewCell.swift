@@ -12,7 +12,7 @@ class AlbumTrackCollectionViewCell: UICollectionViewCell {
     static let identifier = "AlbumTrackCollectionViewCell"
     
     
-
+    
     
     private let trackNameLabel: UILabel = {
         let label = UILabel()

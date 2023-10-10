@@ -60,10 +60,49 @@ class HomeViewController: UIViewController {
         configureCollectionView()
         view.addSubview(spinner)
         fetchData()
+        addLongTapGesture()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
+    }
+    
+    private func addLongTapGesture() {
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+        
+        collectionView.isUserInteractionEnabled = true
+        collectionView.addGestureRecognizer(gesture)
+    }
+    
+    @objc func didLongPress(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else {
+            return
+        }
+        
+        let touchPoint = gesture.location(in: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: touchPoint),
+              indexPath.section == 2 else {
+            return
+        }
+        let model = tracks[indexPath.row]
+        
+        let actionSheet = UIAlertController(title: model.name, message: "Would you like to add this to a playlist", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Add to playlist", style: .default, handler: { [weak self] _ in
+            DispatchQueue.main.async {
+                let vc = LibraryPlaylistsViewController()
+                vc.selectionHandler = { playlist in
+                    APICaller.shared.addTrackToPlaylist(track: model, playlist: playlist) { sucess in
+                        print("add to playlist")
+                    }
+                }
+                vc.title = "Select Playlist"
+                
+                self?.present(UINavigationController(rootViewController: vc), animated: true)
+            }
+        }))
+        
+        present(actionSheet, animated: true)
     }
     
     private func configureCollectionView() {
@@ -77,7 +116,7 @@ class HomeViewController: UIViewController {
         collectionView.register(RecommendedTrackCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier)
         
         collectionView.register(TitleHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
-
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
@@ -117,7 +156,7 @@ class HomeViewController: UIViewController {
                 featuredPlaylist = model
             case .failure(let error):
                 print(error.localizedDescription)
-
+                
             }
         }
         
@@ -161,7 +200,7 @@ class HomeViewController: UIViewController {
                                  playlists: playlists,
                                  tracks: tracks)
         }
-   }
+    }
     
     private func configureModels(newAlbums: [Album],
                                  playlists: [Playlist],
@@ -206,6 +245,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        HapticsMananger.shared.vibrateForSelection()
         let section = sections[indexPath.section]
         switch section {
             
@@ -259,7 +299,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 return UICollectionViewCell()
             }
             let viewModel = viewModels[indexPath.row]
-                
+            
             cell.configure(with: viewModel)
             return cell
             
@@ -293,16 +333,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return header
     }
     
-     static func createSectionLayout(section: Int) -> NSCollectionLayoutSection  {
-         
-         let supplementaryViews = [
+    static func createSectionLayout(section: Int) -> NSCollectionLayoutSection  {
+        
+        let supplementaryViews = [
             NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                    heightDimension: .absolute(50)),
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top)
-         ]
-         
+        ]
+        
         switch section {
         case 0:
             //Item
@@ -335,8 +375,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             //Vertical group in Horizontal group
             let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(400)),
-                                                                     subitem: item,
-                                                                     count: 2)
+                                                                 subitem: item,
+                                                                 count: 2)
             
             let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(400)),
                                                                      subitem: verticalGroup,
@@ -359,8 +399,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             //Vertical group in Horizontal group
             
             let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80)),
-                                                                     subitem: item,
-                                                                     count: 1)
+                                                         subitem: item,
+                                                         count: 1)
             
             //Section
             let section = NSCollectionLayoutSection(group: group)
@@ -375,8 +415,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             //group
             let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(390)),
-                                                                 subitem: item,
-                                                                 count: 1)
+                                                         subitem: item,
+                                                         count: 1)
             
             //Section
             let section = NSCollectionLayoutSection(group: group)

@@ -12,7 +12,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchB
     
     let searchController: UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultViewController())
-        vc.searchBar.placeholder = "Songs, Artists, Albums"
+        vc.searchBar.placeholder = "What do you want to listen to?"
         vc.searchBar.searchBarStyle = .minimal
         vc.definesPresentationContext = true
         return vc
@@ -31,7 +31,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchB
                 count: 2)
             
             group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 20)
-
+            
             
             return NSCollectionLayoutSection(group: group)
         }))
@@ -51,7 +51,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchB
         collectionView.backgroundColor = .systemBackground
         
         APICaller.shared.getGategories { [weak self] result in
-
+            
             DispatchQueue.main.async {
                 switch result{
                 case .success(let categories):
@@ -84,13 +84,13 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchB
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
-
+                
             }
         }
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-
+        
     }
 }
 
@@ -140,6 +140,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
+        HapticsMananger.shared.vibrateForSelection()
         let category = categories[indexPath.row]
         let vc = CategoryViewController(category: category)
         vc.navigationItem.largeTitleDisplayMode = .never

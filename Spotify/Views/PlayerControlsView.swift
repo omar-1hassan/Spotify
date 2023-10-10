@@ -13,8 +13,7 @@ protocol PlayerControlsViewDelegate: AnyObject {
     func PlayerControlsViewDidTapForwardButton(_ playerControlsView: PlayerControlsView)
     func PlayerControlsViewDidTapBackwadButton(_ playerControlsView: PlayerControlsView)
     func PlayerControlsView(_ playerControlsView: PlayerControlsView, didSlideSlider value: Float)
-
-
+    
 }
 
 struct PlayerControlsViewViewModel{
@@ -24,18 +23,23 @@ struct PlayerControlsViewViewModel{
 
 final class PlayerControlsView: UIView {
     
+    var timer: Timer?
+    let duration: Float = 120.0
+    var elapsedTime: Float = 0.0
+    
+    
     private var isPlaying = true
     
     weak var delegate: PlayerControlsViewDelegate?
     
     private let volumeSlider: UISlider = {
-       let slider = UISlider()
+        let slider = UISlider()
         slider.value = 0.5
         return slider
     }()
     
     private let nameLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "This is my song"
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 20, weight: .semibold)
@@ -43,7 +47,7 @@ final class PlayerControlsView: UIView {
     }()
     
     private let subtitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "Drake (feat. some other artists)"
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 18, weight: .regular)
@@ -91,7 +95,7 @@ final class PlayerControlsView: UIView {
         backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
-
+        
         
         clipsToBounds = true
     }
@@ -120,7 +124,7 @@ final class PlayerControlsView: UIView {
         //Update the icon
         let pause = UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 37, weight: .regular))
         let play = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 37, weight: .regular))
-
+        
         playPauseButton.setImage(isPlaying ? pause : play, for: .normal)
     }
     
@@ -135,7 +139,7 @@ final class PlayerControlsView: UIView {
         playPauseButton.frame = CGRect(x: (width-buttonSize)/2, y: volumeSlider.bottom+30, width: buttonSize, height: buttonSize)
         backButton.frame = CGRect(x: playPauseButton.left-80-buttonSize, y: playPauseButton.top, width: buttonSize, height: buttonSize)
         nextButton.frame = CGRect(x: playPauseButton.right+80, y: playPauseButton.top, width: buttonSize, height: buttonSize)
-
+        
     }
     func configure(with viewModel: PlayerControlsViewViewModel){
         nameLabel.text = viewModel.title

@@ -10,36 +10,36 @@ import UIKit
 class WelcomeViewController: UIViewController {
     
     private let signInButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.backgroundColor = .lightText
         button.setTitle("Sign In With Spotify", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 8
         return button
     }()
     
     private let imageView: UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "albums_background")
         return imageView
     }()
-
+    
     private let overlayView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = .black
         view.alpha = 0.6
         return view
     }()
     
     private let logoImageView: UIImageView = {
-       let imageView = UIImageView(image: UIImage(named: "logo"))
+        let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     private let label: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .white

@@ -9,7 +9,7 @@ import UIKit
 
 class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
     static let identifier = "FeaturedPlaylistCollectionViewCell"
-
+    
     private let playlistCoverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
@@ -21,7 +21,7 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
     }()
     
     private let playlistNameLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -29,7 +29,7 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
     }()
     
     private let creatorNameLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 15, weight: .thin)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -51,10 +51,10 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        
         creatorNameLabel.frame = CGRect(x: 3, y: contentView.height-30, width: contentView.width-6, height: 30)
         playlistNameLabel.frame = CGRect(x: 3, y: contentView.height-60, width: contentView.width-6, height: 30)
-
+        
         let imageSize = contentView.height-70
         playlistCoverImageView.frame = CGRect(x: (contentView.width-imageSize)/2, y: 3, width: imageSize, height: imageSize)
         
@@ -73,6 +73,6 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
         playlistNameLabel.text = viewModel.name
         playlistCoverImageView.sd_setImage(with: viewModel.artWorkURL)
         creatorNameLabel.text = viewModel.creatorName
-
+        
     }
 }

@@ -18,8 +18,8 @@ final class AuthManager {
         static let tokenAPIURL = "https://accounts.spotify.com/api/token"
         static let redirectURI = "https://www.iosacademy.io"
         static let scopes = "user-read-private%20playlist-modify-public%20playlist-read-private%20playlist-modify-private%20user-follow-read%20user-library-modify%20user-library-read%20user-read-email"
-
-
+        
+        
     }
     
     private init() {}
@@ -118,7 +118,7 @@ final class AuthManager {
             //Refresh
             refreshIfNeeded { [weak self] success in
                 if let token = self?.accessToken, success{
-                        completion(token)
+                    completion(token)
                 }
             }
         }
@@ -198,6 +198,15 @@ final class AuthManager {
         }
         UserDefaults.standard.setValue(Date().addingTimeInterval(TimeInterval(result.expires_in)),
                                        forKey: "expirationDate")
-
+    }
+    
+    public func signOut(completion: (Bool) -> Void) {
+        UserDefaults.standard.setValue(nil,
+                                       forKey: "access_token")
+        UserDefaults.standard.setValue(nil,
+                                       forKey: "refresh_token")
+        UserDefaults.standard.setValue(nil,
+                                       forKey: "expirationDate")
+        completion(true)
     }
 }

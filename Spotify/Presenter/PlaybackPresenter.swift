@@ -29,7 +29,7 @@ final class PlaybackPresenter {
             return track
         }
         else if let player = self.playerQueue, !tracks.isEmpty {
- 
+            
             return tracks[index]
         }
         
@@ -81,9 +81,7 @@ final class PlaybackPresenter {
         vc.delegate = self
         viewController.present(UINavigationController(rootViewController: vc), animated: true)
         self.playerVC = vc
-
     }
-
 }
 
 extension PlaybackPresenter: PlayerViewControllerDelegate {
@@ -103,10 +101,9 @@ extension PlaybackPresenter: PlayerViewControllerDelegate {
             else if player.timeControlStatus == .paused {
                 player.play()
             }
-  
+            
         }
     }
-    
     
     func didTapForward() {
         if tracks.isEmpty {
@@ -148,11 +145,9 @@ extension PlaybackPresenter: PlayerDataSource {
     
     var subtitle: String? {
         return currentTrack?.artists.first?.name
-
     }
     
     var imageURL: URL? {
         return URL(string: currentTrack?.album?.images.first?.url ?? "")
-        
     }
 }

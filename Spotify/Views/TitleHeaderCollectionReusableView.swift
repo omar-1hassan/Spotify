@@ -11,7 +11,7 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
     static let identifier = "TitleHeaderCollectionReusableView"
     
     private let label: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.textColor = .label
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 22, weight: .regular)

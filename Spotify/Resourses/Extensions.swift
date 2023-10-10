@@ -31,17 +31,17 @@ extension UIView {
 
 extension DateFormatter {
     static let dateFormater: DateFormatter = {
-       let dateFormater = DateFormatter()
+        let dateFormater = DateFormatter()
         dateFormater.dateFormat = "YYYY-MM-dd"
         return dateFormater
     }()
     
     static let displayDateFormater: DateFormatter = {
-       let dateFormater = DateFormatter()
+        let dateFormater = DateFormatter()
         dateFormater.dateStyle = .medium
         return dateFormater
     }()
-
+    
 }
 
 extension String {
@@ -51,4 +51,8 @@ extension String {
         }
         return DateFormatter.displayDateFormater.string(from: date)
     }
+}
+
+extension Notification.Name{
+    static let albumSavedNotifiction = Notification.Name("albumSavedNotifiction")
 }

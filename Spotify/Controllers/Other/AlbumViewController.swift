@@ -30,7 +30,7 @@ class AlbumViewController: UIViewController {
     })
     )
     
-
+    
     private var viewModels = [AlbumCollectionViewCellViewModel]()
     
     private let album: Album
@@ -61,6 +61,40 @@ class AlbumViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
+        fetchData()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapActions))
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+    
+    @objc func didTapActions(){
+        let actionSheet = UIAlertController(title: album.name, message: "Action", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Save Album", style: .default, handler: { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            APICaller.shared.saveAlbum(album: strongSelf.album) { sucess in
+                if sucess{
+                    HapticsMananger.shared.vibrate(for: .success)
+                    NotificationCenter.default.post(name: .albumSavedNotifiction, object: nil)
+                }
+                else {
+                    HapticsMananger.shared.vibrate(for: .error)
+                    
+                }
+            }
+        }))
+        
+        
+        present(actionSheet, animated: true)
+    }
+    
+    func fetchData(){
         APICaller.shared.getAlbumsDetails(for: album) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -69,23 +103,16 @@ class AlbumViewController: UIViewController {
                     self?.tracks = model.tracks.items
                     self?.viewModels = model.tracks.items.compactMap({
                         AlbumCollectionViewCellViewModel(name: $0.name,
-                                                      artistNAme: $0.artists.first?.name ?? "-")
+                                                         artistNAme: $0.artists.first?.name ?? "-")
                         
                     })
                     self?.collectionView.reloadData()
- 
+                    
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         }
-
-    }
-
-        
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
     }
 }
 
@@ -115,7 +142,7 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
             for: indexPath) as? PlaylistHeaderCollectionReusableView, kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
         }
-
+        
         let headerViewModel = PlaylistHeaderViewModel(
             name: album.name,
             ownerName: album.artists.first?.name,

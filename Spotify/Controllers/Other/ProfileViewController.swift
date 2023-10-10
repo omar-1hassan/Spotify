@@ -11,14 +11,14 @@ import SDWebImage
 class ProfileViewController: UIViewController {
     
     private let tableView: UITableView = {
-       let tableView = UITableView()
+        let tableView = UITableView()
         tableView.isHidden = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
     }()
     
     private var models = [String]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Profile"
@@ -33,7 +33,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
     }
-
+    
     private func fetchProfile() {
         APICaller.shared.getCurrentUserProfile { [weak self] result in
             DispatchQueue.main.async {
@@ -45,7 +45,7 @@ class ProfileViewController: UIViewController {
                     print("Profile Error: \(error.localizedDescription)")
                     self?.failedToGetProfile()
                 }
-
+                
             }
         }
     }

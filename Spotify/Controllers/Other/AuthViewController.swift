@@ -21,10 +21,10 @@ class AuthViewController: UIViewController,WKNavigationDelegate {
     }()
     
     public var completionHandler: ((Bool) -> Void)?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         title = "Sign In"
         view.backgroundColor = .systemBackground
         webView.navigationDelegate = self

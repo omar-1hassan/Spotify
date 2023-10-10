@@ -8,7 +8,7 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //set the view controllers for the tab bar
@@ -36,12 +36,12 @@ class TabBarViewController: UITabBarController {
         nav1.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 1)
         nav2.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 1)
         nav3.tabBarItem = UITabBarItem(title: "Library", image: UIImage(systemName: "music.note.list"), tag: 1)
-
+        
         nav1.navigationBar.prefersLargeTitles = true
         nav2.navigationBar.prefersLargeTitles = true
         nav3.navigationBar.prefersLargeTitles = true
-
+        
         setViewControllers([nav1, nav2, nav3], animated: false)
     }
-
+    
 }

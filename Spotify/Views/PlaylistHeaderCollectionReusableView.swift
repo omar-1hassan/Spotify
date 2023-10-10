@@ -20,13 +20,13 @@ final class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
     weak var delegate: PlaylistHeaderCollectionReusableViewDelegate?
     
     private let nameLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .semibold)
         return label
     }()
     
     private let descriptionLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.numberOfLines = 0
@@ -34,14 +34,14 @@ final class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
     }()
     
     private let ownerLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 18, weight: .light)
         return label
     }()
     
     private let imageView: UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(systemName: "photo")
         return imageView
@@ -94,7 +94,7 @@ final class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
         nameLabel.text = viewModel.name
         ownerLabel.text = viewModel.ownerName
         descriptionLabel.text = viewModel.description
-        imageView.sd_setImage(with: viewModel.artWorkURL)
-
+        imageView.sd_setImage(with: viewModel.artWorkURL,placeholderImage: UIImage(systemName: "photo"))
+        
     }
 }
