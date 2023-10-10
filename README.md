@@ -3,7 +3,7 @@
 https://github.com/omar-1hassan/Spotify/assets/136618701/1d01625d-05f6-42a4-83f7-c11db0d54d98
 
 
-##Spotify clone with some key features of the real app
+# Spotify clone with some key features of the real app
 
 1-Browse New Released Albums
 
@@ -22,6 +22,8 @@ https://github.com/omar-1hassan/Spotify/assets/136618701/1d01625d-05f6-42a4-83f7
 8-Search with Ease
 
 I followed MVVM design pattern, Spotify APIs, and programmed without storyboards.
+
+You can find all details and demo here: https://www.linkedin.com/posts/omar-hassan-a52059278_iosappdevelopment-musicexperience-spotifyclone-activity-7117538667169992705-5cMP?utm_source=share&utm_medium=member_desktop
 
 
 
