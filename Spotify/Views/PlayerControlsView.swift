@@ -23,11 +23,6 @@ struct PlayerControlsViewViewModel{
 
 final class PlayerControlsView: UIView {
     
-    var timer: Timer?
-    let duration: Float = 120.0
-    var elapsedTime: Float = 0.0
-    
-    
     private var isPlaying = true
     
     weak var delegate: PlayerControlsViewDelegate?
